@@ -1,9 +1,9 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { env } from "./lib/env.js";
 import subscriptionRouter from "./routes/subscription.js";
 import replyRouter from "./routes/reply.js";
+import { env } from "./lib/env.js";
 
 const app = express();
 app.use(cors());

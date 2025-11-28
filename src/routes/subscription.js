@@ -6,7 +6,7 @@ import { env } from "../lib/env.js";
 const router = Router();
 const PLAN_AMOUNT = Number(env("PAYSTACK_PLAN_AMOUNT", "300000"));
 const PLAN_LABEL = env("PAYSTACK_PLAN_NAME", "AI Reply Plan");
-const SUBSCRIPTION_DURATION_MS = 14 * 24 * 60 * 60 * 1000;
+const SUBSCRIPTION_DURATION_MS = 21 * 24 * 60 * 60 * 1000;
 
 router.post("/status", (req, res) => {
   const { email } = req.body || {};

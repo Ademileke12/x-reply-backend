@@ -14,10 +14,7 @@ export async function generateReply({ text, tone }) {
         content:
           "You are X Reply Helper, a concise but human responder. Write one sentence (<=30 words) in the requested tone, referencing tweet details."
       },
-      {
-        role: "user",
-        content: `Tone: ${tone}\nTweet: ${text}`
-      }
+      { role: "user", content: `Tone: ${tone}\nTweet: ${text}` }
     ],
     temperature: 0.6,
     max_tokens: 80
