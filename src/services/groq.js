@@ -7,7 +7,7 @@ export async function generateReply({ text, tone }) {
   const apiKey = env("GROQ_API_KEY");
   if (!apiKey) throw new Error("Missing Groq API key");
   const body = {
-    model: "llama3-70b-8192",
+    model: "groq/compound-mini",
     messages: [
       {
         role: "system",
