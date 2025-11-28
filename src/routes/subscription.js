@@ -4,12 +4,15 @@ import { initializeTransaction, verifyTransaction } from "../services/paystack.j
 import { env } from "../lib/env.js";
 
 const router = Router();
-const PLAN_AMOUNT = Number(env("PAYSTACK_PLAN_AMOUNT", "300000"));
+const PLAN_AMOUNT = Number(env("PAYSTACK_PLAN_AMOUNT", "350000"));
 const PLAN_LABEL = env("PAYSTACK_PLAN_NAME", "AI Reply Plan");
 const SUBSCRIPTION_DURATION_MS = 21 * 24 * 60 * 60 * 1000;
 
+const normalizeEmail = email => (email ? email.trim().toLowerCase() : "");
+
 router.post("/status", (req, res) => {
-  const { email } = req.body || {};
+  const rawEmail = req.body?.email;
+  const email = normalizeEmail(rawEmail);
   if (!email) return res.status(400).json({ error: "Email is required" });
   const sub = getSubscription(email) || {};
   const active = Boolean(sub.expiresAt && Date.now() < sub.expiresAt);
@@ -24,7 +27,8 @@ router.post("/status", (req, res) => {
 });
 
 router.post("/initialize", async (req, res) => {
-  const { email } = req.body || {};
+  const rawEmail = req.body?.email;
+  const email = normalizeEmail(rawEmail);
   if (!email) return res.status(400).json({ error: "Email is required" });
   try {
     const tx = await initializeTransaction({ email, amount: PLAN_AMOUNT });
@@ -36,7 +40,8 @@ router.post("/initialize", async (req, res) => {
 });
 
 router.post("/confirm", async (req, res) => {
-  const { email } = req.body || {};
+  const rawEmail = req.body?.email;
+  const email = normalizeEmail(rawEmail);
   if (!email) return res.status(400).json({ error: "Email is required" });
   const sub = getSubscription(email);
   if (!sub?.pendingReference) {
