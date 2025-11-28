@@ -10,11 +10,11 @@ const SUBSCRIPTION_DURATION_MS = 21 * 24 * 60 * 60 * 1000;
 
 const normalizeEmail = email => (email ? email.trim().toLowerCase() : "");
 
-router.post("/status", (req, res) => {
+router.post("/status", async (req, res) => {
   const rawEmail = req.body?.email;
   const email = normalizeEmail(rawEmail);
   if (!email) return res.status(400).json({ error: "Email is required" });
-  const sub = getSubscription(email) || {};
+  const sub = (await getSubscription(email)) || {};
   const active = Boolean(sub.expiresAt && Date.now() < sub.expiresAt);
   res.json({
     email,
@@ -32,7 +32,7 @@ router.post("/initialize", async (req, res) => {
   if (!email) return res.status(400).json({ error: "Email is required" });
   try {
     const tx = await initializeTransaction({ email, amount: PLAN_AMOUNT });
-    upsertSubscription(email, { email, pendingReference: tx.reference });
+    await upsertSubscription(email, { email, pendingReference: tx.reference });
     res.json({ authorizationUrl: tx.authorization_url, reference: tx.reference });
   } catch (error) {
     res.status(500).json({ error: error.message || "Unable to start payment" });
@@ -43,7 +43,7 @@ router.post("/confirm", async (req, res) => {
   const rawEmail = req.body?.email;
   const email = normalizeEmail(rawEmail);
   if (!email) return res.status(400).json({ error: "Email is required" });
-  const sub = getSubscription(email);
+  const sub = await getSubscription(email);
   if (!sub?.pendingReference) {
     return res.status(400).json({ error: "No pending transaction. Start payment first." });
   }
@@ -53,7 +53,7 @@ router.post("/confirm", async (req, res) => {
       return res.status(400).json({ error: `Payment status: ${tx.status}` });
     }
     const expiresAt = Date.now() + SUBSCRIPTION_DURATION_MS;
-    upsertSubscription(email, {
+    await upsertSubscription(email, {
       email,
       expiresAt,
       pendingReference: null,
