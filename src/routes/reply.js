@@ -9,7 +9,7 @@ router.post("/", async (req, res) => {
   if (!email || !text || !tone) {
     return res.status(400).json({ error: "email, text, and tone are required" });
   }
-  const sub = getSubscription(email);
+  const sub = await getSubscription(email);
   if (!sub?.expiresAt || Date.now() >= sub.expiresAt) {
     return res.status(402).json({ error: "Subscription inactive" });
   }
