@@ -4,14 +4,12 @@ import { env } from "../lib/env.js";
 const ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
 
 const examples = [
-  "you said it this is exactly why i’m bullish on mira",
-  "love the fact you mentioned pi squared isn’t a blockchain ✍️",
+  "baki type shii gm homie",
   "I just want to ask if there have gotten their acc back",
   "Why would i say such thing for engagement",
   "What the fuck is wrong with people nowadays",
   "Good morning i did the same but it sucks",
-  "I don try",
-  "You should do it for space airdrop",
+  "You should do ir for spaaace airdrop",
   "it literally says airdrop coming soon!",
   "be honest, do you use prediction markets?"
 ];
