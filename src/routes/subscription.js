@@ -64,5 +64,4 @@ router.post("/confirm", async (req, res) => {
     res.status(500).json({ error: error.message || "Unable to verify payment" });
   }
 });
-
 export default router;
