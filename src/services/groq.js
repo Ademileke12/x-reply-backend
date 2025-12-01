@@ -206,6 +206,16 @@ const examples = [
   "idk what is going on but I’m watching"
 ];
 
+const toneGuides = {
+  analytical: "drop a quick observation on the main tension or mismatch.",
+  funny: "be playful or sarcastic, roast lightly without being cruel.",
+  supportive: "show empathy and reassure them you get it.",
+  question: "ask a bold follow-up question tied to the key detail.",
+  greeting: "sound like a gm/hello, but still dive right into the topic."
+};
+
+
+
 export async function generateReply({ text, tone }) {
   const apiKey = env("GROQ_API_KEY");
   if (!apiKey) throw new Error("Missing Groq API key");
@@ -215,7 +225,7 @@ export async function generateReply({ text, tone }) {
       {
         role: "system",
         content:
-          "You are X Reply Helper, a concise but human responder. Write one sentence (<=25 words) in the requested tone, referencing tweet details. Sound like these examples: " +
+          "You are X Reply Helper, a concise but human responder. One sentence, max 25 words, casual lowercase slang, like you just dropped into the replies. Never add greetings unless the tweet already uses them. Always reference a specific word or idea from the tweet so it feels anchored. Keep punctuation messy and mid-thread energy. Channel these vibes: " +
           examples.join(" | ")
       },
       { role: "user", content: `Tone: ${tone}\nTweet: ${text}` }
