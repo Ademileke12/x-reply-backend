@@ -220,7 +220,7 @@ export async function generateReply({ text, tone }) {
   const apiKey = env("GROQ_API_KEY");
   if (!apiKey) throw new Error("Missing Groq API key");
   const body = {
-    model: "groq/compound-mini",
+    model: "groq/compound",
     messages: [
       {
         role: "system",
